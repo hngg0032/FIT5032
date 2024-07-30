@@ -6,7 +6,6 @@
     <div class="details">
       <h3>
         <slot name="heading"></slot>
-        <h1>Hello this is Helen.</h1>
       </h3>
       <slot></slot>
     </div>
