@@ -107,7 +107,7 @@
       <p v-if="showMessage" class="message success">✨ You're a Vue superstar! ✨</p>
       <p v-else class="message">Click the button to see a message.</p>
     </section>
-
+    
     <section class="lab-section">
       <h2>Attribute, Class and Style Binding with <code>v-bind</code></h2>
       <p>Highlighting Specific Authors:</p>
