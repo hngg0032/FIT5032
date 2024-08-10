@@ -9,3 +9,6 @@ Week 2
 - Built-in Directives
 - Attribute Binding
 
+Week 3
+- Bootstrap CSS
+
