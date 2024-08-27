@@ -12,9 +12,6 @@
         <li class="nav-item">
           <router-link to="/about" class="nav-link" active-class="active">About</router-link>
         </li>
-        <!-- <li class="nav-item">
-          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
-        </li> -->
         <!-- Logout option for authenticated users -->
         <li class="nav-item">
           <router-link v-if="!isAuthenticated" to="/login" class="nav-link" active-class="active">
@@ -29,7 +26,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import { isAuthenticated, logout } from '../auth/auth.js' // Import the login function
+import { isAuthenticated, logout } from '../auth/auth.js'
 
 const router = useRouter()
 
