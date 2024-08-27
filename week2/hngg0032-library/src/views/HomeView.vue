@@ -2,7 +2,7 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-md-8 offset-md-2">
-        <h1 class="text-center">User Information Form</h1>
+        <h1 class="text-center">W5. Library Registration Form</h1>
         <form @submit.prevent="submitForm">
           <div class="row mb-3">
             <!-- Update this to sm size instead of md -->
@@ -17,47 +17,6 @@
                 v-model="formData.username"
               />
               <div v-if="errors.username" class="text-danger">{{ errors.username }}</div>
-            </div>
-            <!-- Update this to sm size instead of md -->
-            <div class="col-sm-6">
-              <label for="password" class="form-label">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                @blur="() => validatePassword(true)"
-                @input="() => validatePassword(false)"
-                v-model="formData.password"
-              />
-              <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <!-- isAustralian radio button -->
-            <div class="col-sm-6">
-              <div class="form-check">
-                <input
-                  type="radio"
-                  class="form-check-input"
-                  id="residentYes"
-                  value="true"
-                  v-model="formData.isAustralian"
-                  @change="validateResident"
-                />
-                <label class="form-check-label" for="residentYes">Yes</label>
-              </div>
-              <div class="form-check">
-                <input
-                  type="radio"
-                  class="form-check-input"
-                  id="residentNo"
-                  value="false"
-                  v-model="formData.isAustralian"
-                  @change="validateResident"
-                />
-                <label class="form-check-label" for="residentNo">No</label>
-              </div>
-              <div v-if="errors.isAustralian" class="text-danger">{{ errors.isAustralian }}</div>
             </div>
             <!-- Gender options -->
             <div class="col-sm-6">
@@ -76,6 +35,65 @@
               <div v-if="errors.gender" class="text-danger">{{ errors.gender }}</div>
             </div>
           </div>
+          <!-- New Row for password and confirm password-->
+          <div class="row mb-3">
+            <!-- Password field -->
+            <div class="col-sm-6">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                @blur="() => validatePassword(true)"
+                @input="() => validatePassword(false)"
+                v-model="formData.password"
+              />
+              <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
+            </div>
+            <!-- Confirm password field -->
+            <div class="col-md-6 col-sm-6">
+              <label for="confirm-password" class="form-label">Confirm password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="confirm-password"
+                v-model="formData.confirmPassword"
+                @blur="() => validateConfirmPassword(true)"
+              />
+              <div v-if="errors.confirmPassword" class="text-danger">
+                {{ errors.confirmPassword }}
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <!-- isAustralian radio button -->
+            <div class="col-sm-6">
+              <div class="form-check">
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  id="residentYes"
+                  value="true"
+                  v-model="formData.isAustralian"
+                  @change="validateResident"
+                />
+                <label class="form-check-label" for="residentYes">Yes I'm Australian</label>
+              </div>
+              <div class="form-check">
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  id="residentNo"
+                  value="false"
+                  v-model="formData.isAustralian"
+                  @change="validateResident"
+                />
+                <label class="form-check-label" for="residentNo">No I'm not Australian</label>
+              </div>
+              <div v-if="errors.isAustralian" class="text-danger">{{ errors.isAustralian }}</div>
+            </div>
+          </div>
           <div class="mb-3">
             <!-- Reason for joining -->
             <label for="reason" class="form-label">Reason for joining</label>
@@ -84,9 +102,20 @@
               id="reason"
               rows="3"
               v-model="formData.reason"
-              @blur="validateReason"
+              @input="validateReason"
             ></textarea>
-            <div v-if="errors.reason" class="text-danger">{{ errors.reason }}</div>
+            <div
+              v-if="errors.reason"
+              v-bind:class="
+                errors.reason === 'Great to have a friend!' ? 'text-success' : 'text-danger'
+              "
+            >
+              {{ errors.reason }}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="reason" class="form-label">Suburb</label>
+            <input type="text" class="form-control" id="suburb" v-bind:value="formData.suburb" />
           </div>
           <div class="text-center">
             <button type="submit" class="btn btn-primary me-2">Submit</button>
@@ -117,7 +146,19 @@ const formData = ref({
   password: '',
   isAustralian: null,
   reason: '',
-  gender: ''
+  gender: '',
+  confirmPassword: '',
+  suburb: ''
+})
+
+const errors = ref({
+  username: null,
+  password: null,
+  resident: null,
+  gender: null,
+  reason: null,
+  isAustralian: null,
+  confirmPassword: null
 })
 
 const submittedCards = ref([])
@@ -128,13 +169,15 @@ const submitForm = () => {
   validateResident(true)
   validateGender(true)
   validateReason(true)
+  validateConfirmPassword(true)
 
   if (
     !errors.value.username &&
     !errors.value.password &&
     !errors.value.isAustralian &&
     !errors.value.gender &&
-    !errors.value.reason
+    !errors.value.reason &&
+    !errors.value.confirmPassword
   ) {
     submittedCards.value.push({
       ...formData.value
@@ -149,18 +192,11 @@ const clearForm = () => {
     password: '',
     isAustralian: null,
     reason: '',
-    gender: null
+    gender: null,
+    confirmPassword: '',
+    suburb: ''
   }
 }
-
-const errors = ref({
-  username: null,
-  password: null,
-  resident: null,
-  gender: null,
-  reason: null,
-  isAustralian: null
-})
 
 const validateName = (blur) => {
   if (formData.value.username.length < 3) {
@@ -193,6 +229,14 @@ const validatePassword = (blur) => {
   }
 }
 
+const validateConfirmPassword = (blur) => {
+  if (formData.value.password !== formData.value.confirmPassword) {
+    if (blur) errors.value.confirmPassword = 'Passwords do not match.'
+  } else {
+    errors.value.confirmPassword = null
+  }
+}
+
 const validateResident = () => {
   if (formData.value.isAustralian === null) {
     errors.value.isAustralian = 'Please select if you are an Australian resident.'
@@ -212,6 +256,8 @@ const validateGender = () => {
 const validateReason = () => {
   if (formData.value.reason.trim().length < 10) {
     errors.value.reason = 'Please provide a reason for joining with at least 10 characters.'
+  } else if (formData.value.reason.trim().toLowerCase().includes('friend')) {
+    errors.value.reason = 'Great to have a friend!'
   } else {
     errors.value.reason = null
   }

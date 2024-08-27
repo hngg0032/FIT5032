@@ -1,16 +1,16 @@
 <script setup>
-// import HelloWorld from './components/HelloWorld.vue'
-// import TheWelcome from './components/TheWelcome.vue'
-// import JSON from './components/JSON.vue'
-import LoginForm from './components/LoginForm.vue'
+import BHeader from './components/BHeader.vue'
 </script>
 
 <template>
-  <LoginForm />
-
-  <!-- <main>
-    <JSON></JSON>
-  </main> -->
+  <div class="container mt-5">
+    <header>
+      <BHeader />
+    </header>
+    <main class="main-box">
+      <router-view></router-view>
+    </main>
+  </div>
 </template>
 
 <style scoped>
@@ -39,5 +39,9 @@ header {
     place-items: flex-start;
     flex-wrap: wrap;
   }
+}
+
+.list-group-item {
+  padding: 10px;
 }
 </style>
