@@ -13,12 +13,12 @@
           <router-link to="/about" class="nav-link" active-class="active">About</router-link>
         </li>
         <!-- Logout option for authenticated users -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <router-link v-if="!isAuthenticated" to="/login" class="nav-link" active-class="active">
             Login
           </router-link>
           <a v-else href="#" class="nav-link" @click="handleLogout"> Logout </a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <router-link to="/firelogin" class="nav-link" active-class="active">
             Firebase Login
@@ -29,19 +29,44 @@
             Firebase Register
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link
+            v-if="currentRole === 'user1'"
+            to="/user1"
+            class="nav-link"
+            active-class="active"
+          >
+            User1
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link
+            v-if="currentRole === 'user2'"
+            to="/user2"
+            class="nav-link"
+            active-class="active"
+          >
+            User2
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/logout" class="nav-link" active-class="active"
+            >Firebase Logout</router-link
+          >
+        </li>
       </ul>
     </header>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { isAuthenticated, logout } from '../auth/auth.js'
+import { onMounted } from 'vue'
+import { currentRole } from '@/auth/auth'
 
-const router = useRouter()
-
-const handleLogout = () => {
-  logout()
-  router.push('/login') // Redirect to the login page after logout
-}
+onMounted(() => {
+  const storedRole = localStorage.getItem('userRole')
+  if (storedRole) {
+    currentRole.value = storedRole
+  }
+})
 </script>

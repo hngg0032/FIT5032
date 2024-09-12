@@ -2,9 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginView from '@/views/LoginView.vue'
-import { isAuthenticated } from '../auth/auth.js'
+import { isAuthenticated, currentRole } from '../auth/auth.js'
 import FirebaseSigninView from '@/views/FirebaseSigninView.vue'
 import FirebaseRegisterView from '@/views/FirebaseRegisterView.vue'
+import User1View from '@/views/User1View.vue'
+import User2View from '@/views/User2View.vue'
+import LogOutView from '@/views/LogOutView.vue'
 
 const routes = [
   {
@@ -38,6 +41,36 @@ const routes = [
     path: '/fireregister',
     name: 'FireRegister',
     component: FirebaseRegisterView
+  },
+  {
+    path: '/user1',
+    name: 'User1',
+    component: User1View,
+    beforeEnter: (to, from, next) => {
+      console.log('Trying to go to /user1', currentRole)
+      if (currentRole.value === 'user1' || localStorage.getItem('currentRole') === 'user1') {
+        next()
+      } else {
+        next('/login')
+      }
+    }
+  },
+  {
+    path: '/user2',
+    name: 'User2',
+    component: User2View,
+    beforeEnter: (to, from, next) => {
+      if (currentRole.value === 'user2' || localStorage.getItem('currentRole') === 'user2') {
+        next()
+      } else {
+        next('/login')
+      }
+    }
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: LogOutView
   }
 ]
 
