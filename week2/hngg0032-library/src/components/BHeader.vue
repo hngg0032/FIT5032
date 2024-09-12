@@ -19,6 +19,16 @@
           </router-link>
           <a v-else href="#" class="nav-link" @click="handleLogout"> Logout </a>
         </li>
+        <li class="nav-item">
+          <router-link to="/firelogin" class="nav-link" active-class="active">
+            Firebase Login
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/fireregister" class="nav-link" active-class="active">
+            Firebase Register
+          </router-link>
+        </li>
       </ul>
     </header>
   </div>
