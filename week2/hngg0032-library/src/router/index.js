@@ -9,6 +9,7 @@ import User1View from '@/views/User1View.vue'
 import User2View from '@/views/User2View.vue'
 import LogOutView from '@/views/LogOutView.vue'
 import AddBookView from '@/views/AddBookView.vue'
+import WeatherView from '@/views/WeatherView.vue'
 
 const routes = [
   {
@@ -77,6 +78,11 @@ const routes = [
     path: '/addbook',
     name: 'AddBook',
     component: AddBookView
+  },
+  {
+    path: '/WeatherCheck',
+    name: 'WeatherCheck',
+    component: WeatherView
   }
 ]
 
