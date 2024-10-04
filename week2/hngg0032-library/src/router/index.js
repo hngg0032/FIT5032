@@ -10,8 +10,9 @@ import User2View from '@/views/User2View.vue'
 import LogOutView from '@/views/LogOutView.vue'
 import AddBookView from '@/views/AddBookView.vue'
 import WeatherView from '@/views/WeatherView.vue'
-import GetBookCountView from '@/views/CountBookAPI.vue'
+import GetBookCountView from '@/views/GetBookCountView.vue'
 import CountBookAPI from '@/views/CountBookAPI.vue'
+import GetAllBookAPI from '@/views/GetAllBookAPI.vue'
 
 const routes = [
   {
@@ -95,6 +96,11 @@ const routes = [
     path: '/CountBookAPI',
     name: 'CountBookAPI',
     component: CountBookAPI
+  },
+  {
+    path: '/GetAllBookAPI',
+    name: 'GetAllBookAPI',
+    component: GetAllBookAPI
   }
 ]
 

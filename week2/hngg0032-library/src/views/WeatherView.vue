@@ -8,22 +8,13 @@
       <button @click="searchByCity" class="search-button">Search</button>
     </div>
   </div>
-  <!--The <main> tag in HTML is used to specify the main content of a document 
-      More info about main, check https://www.w3schools.com/tags/tag_main.asp-->
   <main>
-    <!--If there are no data returned, then skip rendering the information-->
     <div v-if="weatherData">
-      <!--Display the weather data attribute returned from API
-        Example of API data: https://openweathermap.org/current-->
       <h2>{{ weatherData.name }}, {{ weatherData.sys.country }}</h2>
       <div>
-        <!--The image source of of the weather icon will be coming from a function called iconUrl
-            which will be shared in script later-->
         <img :src="iconUrl" alt="Weather Icon" />
         <p>{{ temperature }} °C</p>
       </div>
-      <!-- weather[0] means the current weather, the way we need to obtain data depends on how
-        the API JSON data looks-->
       <span>{{ weatherData.weather[0].description }}</span>
     </div>
   </main>
@@ -35,11 +26,8 @@ import axios from 'axios'
 
 const apikey = 'c44d1fff4ca3ad479eae4cbd52ad54ea'
 
-// Define reactive state variables
 const city = ref('')
 const weatherData = ref(null)
-const hourlyForecast = ref([])
-const dailyForecast = ref([])
 
 // Computed properties for temperature and weather icon URL
 const temperature = computed(() => {
@@ -77,4 +65,11 @@ const fetchWeatherData = async (url) => {
 onMounted(() => {
   fetchCurrentLocationWeather()
 })
+
+const searchByCity = async () => {
+  if (city.value.trim()) {
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${apikey}`
+    await fetchWeatherData(url)
+  }
+}
 </script>
