@@ -1,11 +1,19 @@
 <script setup>
+import { computed } from 'vue'
 import BHeader from './components/BHeader.vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+const showHeader = computed(() => {
+  return route.name !== 'CountBookAPI'
+})
 </script>
 
 <template>
   <div class="container mt-5">
     <header>
-      <BHeader />
+      <BHeader v-if="showHeader" />
     </header>
     <main class="main-box">
       <router-view></router-view>

@@ -60,14 +60,13 @@ const deleteBookId = ref('')
 
 const addBook = async () => {
   try {
-    const isbnNumber = Number(isbn.value)
-    if (isNaN(isbnNumber)) {
-      alert('ISBN must be a valid number')
+    if (isbn.value === '') {
+      alert('ISBN must not be empty or null')
       return
     }
 
     await addDoc(collection(db, 'books'), {
-      isbn: isbnNumber,
+      isbn: isbn.value,
       name: name.value
     })
 

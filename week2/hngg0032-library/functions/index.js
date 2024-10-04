@@ -1,3 +1,4 @@
+/* eslint-disable*/
 /**
  * Import function triggers from their respective submodules:
  *
@@ -18,23 +19,46 @@
 //   response.send("Hello from Firebase!");
 // });
 
-const { onRequest } = require("firebase-functions/v2/https");
-const admin = require("firebase-admin");
-const cors = require("cors")({ origin: true });
+const { onRequest } = require('firebase-functions/v2/https')
+const admin = require('firebase-admin')
+const cors = require('cors')({ origin: true })
+const functions = require('firebase-functions')
 
-admin.initializeApp();
+admin.initializeApp()
 
 exports.countBooks = onRequest((req, res) => {
   cors(req, res, async () => {
     try {
-      const booksCollection = admin.firestore().collection("books");
-      const snapshot = await booksCollection.get();
-      const count = snapshot.size;
+      const booksCollection = admin.firestore().collection('books')
+      const snapshot = await booksCollection.get()
+      const count = snapshot.size
 
-      res.status(200).send({ count });
+      res.status(200).send({ count })
     } catch (error) {
-      console.error("Error counting books:", error.message);
-      res.status(500).send("Error counting books");
+      console.error('Error counting books:', error.message)
+      res.status(500).send('Error counting books')
     }
-  });
-});
+  })
+})
+
+// Trigger when a new document is added to the 'books' collection
+exports.capitalizeBookData = functions.firestore
+  .document('books/{bookId}')
+  .onCreate(async (snap, context) => {
+    const bookData = snap.data()
+    const bookId = context.params.bookId
+
+    // Capitalize the book data
+    const capitalizedData = {
+      isbn: String(bookData.isbn).toUpperCase(),
+      name: bookData.name.toUpperCase()
+    }
+
+    try {
+      // Update the Firestore document with the capitalized data
+      await admin.firestore().collection('books').doc(bookId).update(capitalizedData)
+      console.log('Book data capitalized and updated:', capitalizedData)
+    } catch (error) {
+      console.error('Error updating capitalized book data:', error)
+    }
+  })
